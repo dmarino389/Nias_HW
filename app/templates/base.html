@@ -2,39 +2,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Family History Management System</title>
-    <!-- Include any CSS or Bootstrap links here -->
+    <title>{% block title %}My Family Tree{% endblock %}</title>
+    <!-- Include CSS and JavaScript here -->
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container">
-            <a class="navbar-brand" href="/">Family History</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/add_record">Add Record</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/search_records">Search Records</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/display_records">Display Records</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
+    <nav>
+        <!-- Your navigation bar here -->
     </nav>
-    <div class="container">
-        {% block content %}
-        {% endblock %}
-    </div>
+
+    {% block content %}
+    <!-- This block will be overridden by child templates -->
+    {% endblock %}
+
+    <footer>
+        <!-- Your footer here -->
+    </footer>
 </body>
 </html>
-   

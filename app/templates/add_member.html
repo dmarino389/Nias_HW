@@ -1,0 +1,25 @@
+<!-- add_member.html -->
+{% extends "base.html" %}
+
+{% block title %}Add Family Member{% endblock %}
+
+{% block content %}
+<div class="add-member-form">
+    <h2>Add a Family Member</h2>
+    <form action="{{ url_for('add_member') }}" method="post">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="relationship">Relationship:</label>
+        <input type="text" id="relationship" name="relationship" required>
+
+        <label for="address">Address:</label>
+        <input type="text" id="address" name="address" required>
+
+        <label for="medical_records">Medical Records:</label>
+        <textarea id="medical_records" name="medical_records" required></textarea>
+
+        <button type="submit">Add Member</button>
+    </form>
+</div>
+{% endblock %}
