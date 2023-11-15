@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results</title>
+</head>
+<body>
+    <h1>Search Results</h1>
+    <ul>
+        {% for result in results %}
+            <li>
+                <strong>First Name:</strong> {{ result['First Name'] }}<br>
+                <strong>Last Name:</strong> {{ result['Last Name'] }}<br>
+                <strong>Middle Name:</strong> {{ result['Middle Name'] }}<br>
+                <!-- Include other fields as needed -->
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

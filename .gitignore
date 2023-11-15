@@ -1,0 +1,5 @@
+FamilyTree
+.env
+venv
+__pycache__
+migrations
