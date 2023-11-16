@@ -1,53 +1,22 @@
+<!-- index.html -->
 {% extends "base.html" %}
 
-{% block title %}
-Home - My Family Tree
-{% endblock %}
-
 {% block content %}
-<nav>
-    <a href="{{ url_for('add_member') }}">Add Family Member</a>
-</nav>
-
-<div id="family-tree">
-    <div class="tree-level grandparents">
-        {% for member in family_tree['grandparents'] %}
-            <div class="family-member grandparent">{{ member.name }}</div>
-        {% endfor %}
+<div class="container">
+    <h2>Family Tree</h2>
+    <div class="row">
+        <div class="col-md-6">
+            <ul class="list-group">
+                {% for member in family_members %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ member.name }}
+                        <form action="{{ url_for('delete_member', member_id=member.id) }}" method="post">
+                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                        </form>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
-
-    <div class="tree-level parents">
-        {% for member in family_tree['parents'] %}
-            <div class="family-member parent">{{ member.name }}</div>
-        {% endfor %}
-    </div>
-
-    <div class="tree-level children">
-        {% for member in family_tree['children'] %}
-            <div class="family-member child">{{ member.name }}</div>
-        {% endfor %}
-    </div>
-    <!-- Continue for other levels -->
 </div>
 {% endblock %}
-
-{% block styles %}
-<style>
-    #family-tree {
-        display: flex;
-        flex-direction: column-reverse; /* This will put grandparents at the top */
-        align-items: center;
-    }
-    .tree-level {
-        display: flex;
-        justify-content: center;
-    }
-    .family-member {
-        margin: 5px;
-        padding: 5px;
-        border: 1px solid #ccc;
-    }
-    /* Style classes for grandparents, parents, children, etc. */
-    .grandparent { background-color: lightgreen; }
-    .parent { background-color: lightblue; }
-    .child { background-color

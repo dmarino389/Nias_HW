@@ -10,11 +10,4 @@ app.config.from_object(Config)
 db.init_app(app)
 migrate = Migrate(app, db)
 
-
-
-from app.models import FamilyHistory
-
-
-from app import routes
-
-
+from app import routes, models
