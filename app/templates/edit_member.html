@@ -1,30 +1,47 @@
+<!-- FILEPATH: /c:/Users/marin/OneDrive/Desktop/Coding Projects/Flask/11-15 Family Tree Project/Nias_HW/app/templates/edit_member.html -->
 {% extends 'base.html' %}
 
 {% block title %}Edit Family Member - {{ super() }}{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-    <h2>Edit Family Member</h2>
-    <form method="POST" action="">
-        {{ form.hidden_tag() }}
-        <div class="form-group">
-            {{ form.name.label(class="form-control-label") }}
-            {{ form.name(class="form-control") }}
-        </div>
-        <div class="form-group">
-            {{ form.relationship.label(class="form-control-label") }}
-            {{ form.relationship(class="form-control") }}
-        </div>
-        <div class="form-group">
-            {{ form.address.label(class="form-control-label") }}
-            {{ form.address(class="form-control") }}
-        </div>
-        <div class="form-group">
-            {{ form.medical_records.label(class="form-control-label") }}
-            {{ form.medical_records(class="form-control") }}
-        </div>
-        <button type="submit" class="btn btn-primary">Save Changes</button>
-        <a href="{{ url_for('index') }}" class="btn btn-secondary">Cancel</a>
-    </form>
+<div class="container-fluid mt-5">
+    <div class="card p-4">
+        <h2>Edit Family Member</h2>
+        <form method="POST" action="">
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                <label for="name" class="form-label">Name</label>
+                {{ form.name(class="form-control form-control-lg") }}
+            </div>
+            <div class="form-group">
+                <label for="relationship" class="form-label">Relationship</label>
+                {{ form.relationship(class="form-control form-control-lg") }}
+            </div>
+            <div class="form-group">
+                <label for="address" class="form-label">Address</label>
+                {{ form.address(class="form-control form-control-lg") }}
+            </div>
+            <div class="form-group">
+                <label for="birthdate" class="form-label">Birthdate</label>
+                {{ form.birthdate(class="form-control form-control-lg") }}
+            </div>
+            <div class="form-group">
+                <label for="medical_records" class="form-label">Medical Records</label>
+                {{ form.medical_records(class="form-control form-control-lg") }}
+            </div>
+            <div class="form-group">
+                <label for="notes" class="form-label">Notes</label>
+                {{ form.notes(class="form-control form-control-lg") }}
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg mr-2">Save Changes</button>
+            <a href="{{ url_for('index') }}" class="btn btn-secondary btn-lg">Cancel</a>
+        </form>
+    </div>
 </div>
+
+<!-- Add Bootstrap CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<!-- Add Bootstrap JavaScript -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 {% endblock %}

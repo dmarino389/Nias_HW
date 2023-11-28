@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+  <div class="card">
+    <div class="card-body">
+      <h2 class="card-title">{{ family_member.name }}</h2>
+      <p class="card-text">Relationship: {{ family_member.relationship }}</p>
+      <p class="card-text">Address: {{ family_member.address }}</p>
+      <p class="card-text">Birthdate: {{ family_member.birthdate.strftime('%m-%d-%Y') if family_member.birthdate else 'Not provided' }}</p>
+      <p class="card-text">Medical Records: {{ family_member.medical_records }}</p>
+      <p class="card-text">Notes: {{ family_member.notes }}</p>
+    </div>
+  </div>
+</div>
+{% endblock %}

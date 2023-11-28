@@ -4,24 +4,34 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from app import app, db
 from app.models import FamilyMember, User  # Import the User model
 from app.forms import RegistrationForm, LoginForm, EditMemberForm  # Import your user input forms
-
-# Remove the global family_members list
+from datetime import datetime
+import csv
+import smtplib
+from email.mime.text import MIMEText
+from io import StringIO
 
 @app.route('/')
 @login_required
 def index():
-    family_members = FamilyMember.query.all()
+    # Fetch only family members associated with the current user
+    family_members = FamilyMember.query.filter_by(user_id=current_user.id).all()
     return render_template('index.html', family_members=family_members)
 
 @app.route('/add_member', methods=['GET', 'POST'])
 @login_required
 def add_member():
     if request.method == 'POST':
+        birthdate_str = request.form['birthdate']
+        birthdate = datetime.strptime(birthdate_str, '%m-%d-%Y').date() if birthdate_str else None
+
         new_member = FamilyMember(
+            user_id=current_user.id,  # Associate the new member with the current user
             name=request.form['name'],
             relationship=request.form['relationship'],
             address=request.form['address'],
-            medical_records=request.form['medical_records']
+            birthdate=birthdate,
+            medical_records=request.form['medical_records'],
+            notes=request.form['notes']
         )
         db.session.add(new_member)
         db.session.commit()
@@ -32,14 +42,41 @@ def add_member():
 @app.route('/delete_member/<int:member_id>', methods=['POST'])
 @login_required
 def delete_member(member_id):
-    # Find and delete the member with the specified member_id from the database
     member_to_delete = FamilyMember.query.get(member_id)
-
-    if member_to_delete:
+    if member_to_delete and member_to_delete.user_id == current_user.id:
         db.session.delete(member_to_delete)
         db.session.commit()
 
     return redirect(url_for('index'))
+
+@app.route('/edit_member/<int:member_id>', methods=['GET', 'POST'])
+@login_required
+def edit_member(member_id):
+    family_member = FamilyMember.query.get_or_404(member_id)
+
+    if family_member.user_id != current_user.id:
+        flash('Unauthorized access.', 'danger')
+        return redirect(url_for('index'))
+
+    form = EditMemberForm(obj=family_member)
+    if form.validate_on_submit():
+        form.populate_obj(family_member)
+        db.session.commit()
+        flash('Family member information has been updated.', 'success')
+        return redirect(url_for('index'))
+
+    return render_template('edit_member.html', form=form)
+
+@app.route('/member/<int:member_id>')
+@login_required
+def member_detail(member_id):
+    family_member = FamilyMember.query.get_or_404(member_id)
+
+    if family_member.user_id != current_user.id:
+        flash('Unauthorized access.', 'danger')
+        return redirect(url_for('index'))
+
+    return render_template('member_detail.html', family_member=family_member)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -54,6 +91,7 @@ def register():
         db.session.commit()
         flash('Your account has been created! You can now log in.', 'success')
         return redirect(url_for('login'))
+
     return render_template('register.html', form=form)
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -78,25 +116,4 @@ def logout():
     flash('You have been logged out.', 'info')
     return redirect(url_for('index'))
 
-
-@app.route('/edit_member/<int:member_id>', methods=['GET', 'POST'])
-@login_required  # Ensure that the user is logged in to access this route
-def edit_member(member_id):
-    # Retrieve the family member to be edited
-    family_member = FamilyMember.query.get(member_id)
-
-    if not family_member:
-        flash('Family member not found.', 'danger')
-        return redirect(url_for('index'))
-
-    form = EditMemberForm(obj=family_member)
-
-    if form.validate_on_submit():
-        # Update the family member's information
-        form.populate_obj(family_member)
-        db.session.commit()
-        flash('Family member information has been updated.', 'success')
-        return redirect(url_for('index'))
-
-    return render_template('edit_member.html', form=form)
 
